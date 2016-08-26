@@ -18,6 +18,10 @@ if __name__ == '__main__':
             # get the list of ppl in that level
             ppl_list = str(people).strip().split(" ")
             for ppl in ppl_list:
-                people_matrix[ppl] = new_level
+                # create a list if not present already
+                current_list = people_matrix.get(ppl, [])
+                current_list.append(new_level)
+                people_matrix[ppl] = current_list
     for ppl, level in people_matrix.items():
-        print (ppl) + ' : ' + str(level)
+        # easy csv format
+        print (ppl) + ',' + ','.join(str(l) for l in level)
