@@ -7,10 +7,9 @@ from score_gatherer import days
 # this maps like so:
 # person -> [day1, day2, ...]
 people_matrix = dict()
-
-if __name__ == '__main__':
-    for i in xrange(5):
-        scores_tuples = generate_scores(days[i])
+def generate_level_sorting(files):
+    for f in files:
+        scores_tuples = generate_scores(f)
         for tuple in scores_tuples:
             # get the level and the ppl in that level
             new_level, people = tuple
@@ -22,6 +21,11 @@ if __name__ == '__main__':
                 current_list = people_matrix.get(ppl, [])
                 current_list.append(new_level)
                 people_matrix[ppl] = current_list
-    for ppl, level in people_matrix.items():
-        # easy csv format
-        print (ppl) + ',' + ','.join(str(l) for l in level)
+    with open('csv-out', 'w') as of:
+        for ppl, level in people_matrix.items():
+            # easy csv format
+            print (ppl) + ',' + ','.join(str(l) for l in level)
+            of.write((ppl) + ',' + ','.join(str(l) for l in level) + '\n')
+
+if __name__ == '__main__':
+    generate_level_sorting(days)
