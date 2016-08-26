@@ -18,7 +18,6 @@ def get_files(folder):
     # for each file, append the full path, then use that to get
     # the time of creation of that, then sort using that time.
     files.sort(key=lambda x: os.path.getmtime(os.path.join(os.curdir, folder, x)))
-    print files
     return files
 
 def generate_level_sorting(files):
@@ -35,12 +34,13 @@ def generate_level_sorting(files):
                 current_list = people_matrix.get(ppl, [])
                 current_list.append(new_level)
                 people_matrix[ppl] = current_list
-    with open('csv-out', 'w') as of:
+    with open('csv-out-every5', 'w') as of:
         for ppl, level in people_matrix.items():
             # easy csv format
             print (ppl) + ',' + ','.join(str(l) for l in level)
             of.write((ppl) + ',' + ','.join(str(l) for l in level) + '\n')
 
 if __name__ == '__main__':
-    get_files('scores')
-    generate_level_sorting(days)
+    files = get_files('scores')
+    os.chdir('scores')
+    generate_level_sorting(files)
