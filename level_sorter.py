@@ -1,3 +1,5 @@
+import os
+
 __author__ = 'saipc'
 
 from score_gatherer import generate_scores
@@ -7,6 +9,10 @@ from score_gatherer import days
 # this maps like so:
 # person -> [day1, day2, ...]
 people_matrix = dict()
+
+def get_files(folder):
+    files = os.listdir(folder)
+
 def generate_level_sorting(files):
     for f in files:
         scores_tuples = generate_scores(f)
@@ -28,4 +34,5 @@ def generate_level_sorting(files):
             of.write((ppl) + ',' + ','.join(str(l) for l in level) + '\n')
 
 if __name__ == '__main__':
+    get_files(os.curdir)
     generate_level_sorting(days)
