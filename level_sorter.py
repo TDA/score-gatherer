@@ -12,6 +12,14 @@ people_matrix = dict()
 
 def get_files(folder):
     files = os.listdir(folder)
+    # remove that stupid .ds_store
+    files = files[1:]
+    # this complicated looking lambda is doing something simple:
+    # for each file, append the full path, then use that to get
+    # the time of creation of that, then sort using that time.
+    files.sort(key=lambda x: os.path.getmtime(os.path.join(os.curdir, folder, x)))
+    print files
+    return files
 
 def generate_level_sorting(files):
     for f in files:
@@ -34,5 +42,5 @@ def generate_level_sorting(files):
             of.write((ppl) + ',' + ','.join(str(l) for l in level) + '\n')
 
 if __name__ == '__main__':
-    get_files(os.curdir)
+    get_files('scores')
     generate_level_sorting(days)
