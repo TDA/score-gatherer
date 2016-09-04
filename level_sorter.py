@@ -20,8 +20,15 @@ def get_files(folder):
     files.sort(key=lambda x: os.path.getmtime(os.path.join(os.curdir, folder, x)))
     return files
 
-def generate_level_sorting(files):
+# interval
+def generate_level_sorting(files, interval, opfile):
+    counter = 0
     for f in files:
+        counter = counter + 1
+        if (interval != 0 and counter % interval != 1):
+            # skip this file
+            continue
+        print f
         scores_tuples = generate_scores(f)
         for tuple in scores_tuples:
             # get the level and the ppl in that level
@@ -34,7 +41,7 @@ def generate_level_sorting(files):
                 current_list = people_matrix.get(ppl, [])
                 current_list.append(new_level)
                 people_matrix[ppl] = current_list
-    with open('csv-out-every5', 'w') as of:
+    with open(opfile, 'w') as of:
         for ppl, level in people_matrix.items():
             # easy csv format
             print (ppl) + ',' + ','.join(str(l) for l in level)
@@ -43,4 +50,4 @@ def generate_level_sorting(files):
 if __name__ == '__main__':
     files = get_files('scores')
     os.chdir('scores')
-    generate_level_sorting(files)
+    generate_level_sorting(files, 12, 'csv-out-1hr')
